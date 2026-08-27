@@ -1,0 +1,135 @@
+@use "variables" as *;
+
+// Media Queries
+@mixin mobile {
+  @media (max-width: #{$breakpoint-sm - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: #{$breakpoint-md - 1px}) {
+    @content;
+  }
+}
+
+@mixin desktop-only {
+  @media (min-width: #{$breakpoint-md}) {
+    @content;
+  }
+}
+
+// Layout Helpers
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+// Card Design
+@mixin card-surface {
+  background-color: $bg-secondary;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-md;
+  padding: 1.5rem;
+  transition: border-color $transition-speed $transition-ease, transform $transition-speed $transition-ease;
+
+  &:hover {
+    border-color: $border-color-active;
+  }
+}
+
+// Custom Scrollbar
+@mixin custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba($accent-mint, 0.2);
+    border-radius: 3px;
+    &:hover {
+      background: rgba($accent-mint, 0.4);
+    }
+  }
+}
+
+// Interactive states
+@mixin interactive-focus {
+  outline: none;
+  border-color: $accent-mint;
+  box-shadow: 0 0 0 3px rgba($accent-mint, 0.15);
+}
+
+// Buttons
+@mixin btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  font-family: $font-family;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  transition: all $transition-speed $transition-ease;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+@mixin btn-primary {
+  @include btn-base;
+  background-color: $accent-mint;
+  color: #000;
+  font-weight: 600;
+
+  &:hover:not(:disabled) {
+    background-color: $accent-mint-hover;
+    box-shadow: 0 0 12px rgba($accent-mint, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@mixin btn-secondary {
+  @include btn-base;
+  background-color: transparent;
+  border-color: $border-color;
+  color: $text-primary;
+
+  &:hover:not(:disabled) {
+    background-color: $bg-tertiary;
+    border-color: $accent-mint-alpha;
+    color: $accent-mint;
+  }
+}
+
+@mixin btn-danger {
+  @include btn-base;
+  background-color: transparent;
+  border-color: rgba($danger-color, 0.2);
+  color: $danger-color;
+
+  &:hover:not(:disabled) {
+    background-color: rgba($danger-color, 0.1);
+    border-color: $danger-color;
+  }
+}

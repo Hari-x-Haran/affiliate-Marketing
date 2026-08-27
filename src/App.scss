@@ -1,0 +1,1515 @@
+@use "./styles/variables" as *;
+@use "./styles/mixins" as *;
+
+// ==========================================
+// AUTHENTICATION LAYOUT (Login & Register)
+// ==========================================
+
+.auth-container{
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-card {
+  width: 100%;
+  
+  max-width: 440px;
+  background-color: $bg-secondary;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.4s $transition-ease;
+
+  @include mobile {
+    padding: 1.75rem;
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  &__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: 1rem;
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: 0.35rem;
+  }
+
+  &__subtitle {
+    font-size: 0.875rem;
+    color: $text-secondary;
+  }
+
+  &__form {
+    margin-top: 1.5rem;
+  }
+
+  &__error, &__success {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: $border-radius-sm;
+    font-size: 0.875rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.4;
+    svg {
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+  }
+
+  &__error {
+    background-color: rgba($danger-color, 0.1);
+    border: 1px solid rgba($danger-color, 0.2);
+    color: $danger-color;
+  }
+
+  &__success {
+    background-color: rgba($accent-mint, 0.1);
+    border: 1px solid rgba($accent-mint, 0.2);
+    color: $accent-mint;
+  }
+
+  &__footer {
+    text-align: center;
+    margin-top: 1.75rem;
+    font-size: 0.875rem;
+    color: $text-secondary;
+
+    a {
+      color: $accent-mint;
+      font-weight: 500;
+      transition: color $transition-speed;
+
+      &:hover {
+        color: $accent-mint-hover;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__limitation-badge {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.75rem;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+.btn-primary-auth {
+  @include btn-primary;
+  width: 100%;
+  height: 44px;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+// ==========================================
+// MAIN DASHBOARD LAYOUT CONTROLS
+// ==========================================
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-layout {
+  display: flex;
+  flex: 1;
+  position: relative;
+}
+
+.content-wrapper {
+  flex: 1;
+  padding: 2.5rem;
+  margin-top: $navbar-height;
+  margin-left: $sidebar-width;
+  width: calc(100% - #{$sidebar-width});
+  min-height: calc(100vh - #{$navbar-height});
+  transition: margin-left $transition-speed $transition-ease, width $transition-speed $transition-ease;
+
+  // Center inner pages up to 1200px
+  & > div {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  @include tablet {
+    margin-left: 0;
+    width: 100%;
+    padding: 1.5rem 1.25rem;
+  }
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $navbar-height;
+  background-color: $bg-secondary;
+  border-bottom: 1px solid $border-color;
+  @include flex-between;
+  padding: 0 2rem;
+  z-index: 100;
+
+  @include mobile {
+    padding: 0 1rem;
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__toggle {
+    display: none; // Hidden on desktop when sidebar is docked
+    align-items: center;
+    justify-content: center;
+    color: $text-primary;
+    padding: 0.25rem;
+    border-radius: $border-radius-sm;
+    transition: background-color $transition-speed;
+    cursor: pointer; // Ensure it behaves like a button
+    background: none;
+    border: none;
+
+    &:hover {
+      background-color: $bg-tertiary;
+    }
+
+    @include tablet {
+      display: flex; // Show hamburger only on mobile/tablet
+    }
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $text-primary;
+    user-select: none;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+
+    @include mobile {
+      gap: 0.75rem;
+    }
+  }
+
+  &__user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 0.8125rem;
+    max-width: 150px;
+
+    @include mobile {
+      display: none; // hide text on small mobile
+    }
+  }
+
+  &__welcome {
+    color: $text-muted;
+  }
+
+  &__username {
+    color: $text-primary;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    text-align: right;
+  }
+
+  &__profile-btn {
+    @include flex-center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: $bg-tertiary;
+    border: 1px solid $border-color;
+    color: $text-secondary;
+    transition: all $transition-speed;
+
+    &:hover {
+      border-color: $accent-mint-alpha;
+      color: $accent-mint;
+      background-color: rgba($accent-mint, 0.05);
+    }
+  }
+
+  &__logout-btn {
+    @include btn-secondary;
+    padding: 0.4rem 0.8rem;
+    height: 34px;
+    font-size: 0.8125rem;
+
+    @include mobile {
+      span {
+        display: none; // Hide word "Logout" on small screen
+      }
+
+      padding: 0.4rem;
+      width: 34px;
+    }
+  }
+}
+
+// --- SIDEBAR --- 
+.sidebar-overlay {
+  display: none; // Hidden by default on all screens
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(2px);
+  z-index: 98;
+
+  @include tablet {
+    &--open {
+      display: block; // Visible when active on mobile/tablet
+    }
+  }
+}
+
+.sidebar {
+  position: fixed;
+  top: $navbar-height;
+  left: 0;
+  bottom: 0;
+  width: $sidebar-width;
+  background-color: $bg-secondary;
+  border-right: 1px solid $border-color;
+  padding: 1.5rem 0.75rem;
+  z-index: 99;
+  transition: transform $transition-speed $transition-ease;
+  
+  // Docked on desktop by default
+  transform: translateX(0);
+
+  @include tablet {
+    transform: translateX(-100%); // Hidden off-screen on mobile/tablet
+    box-shadow: 10px 0 25px rgba(0,0,0,0.3);
+
+    &--open {
+      transform: translateX(0); // Slides out over content on click
+    }
+  }
+
+  &__list {
+    @include flex-column;
+    gap: 0.35rem;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0.75rem 1rem;
+    color: $text-secondary;
+    border-radius: $border-radius-sm;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all $transition-speed;
+
+    &:hover {
+      color: $text-primary;
+      background-color: $bg-tertiary;
+    }
+
+    &--active {
+      color: $accent-mint;
+      background-color: rgba($accent-mint, 0.06);
+      font-weight: 600;
+      border-left: 3px solid $accent-mint;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      padding-left: calc(1rem - 3px);
+    }
+  }
+
+  &__icon {
+    @include flex-center;
+    flex-shrink: 0;
+  }
+}
+
+// ==========================================
+// REUSABLE DASHBOARD STYLES & METRICS
+// ==========================================
+
+.profile-page__header {
+  margin-bottom: 1.5rem;
+}
+
+// Page Headers
+.page-title {
+  margin-top: 0; // Removed margin-top: 150px
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $text-primary;
+  margin-bottom: 0.25rem;
+
+  @include mobile {
+    font-size: 1.5rem;
+  }
+}
+
+.page-subtitle {
+  font-size: 0.9rem;
+  color: $text-secondary;
+}
+
+// Stats Card Container Grid
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-top: 2rem;
+
+  @include desktop-only {
+    @media (max-width: 1200px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
+}
+
+// Individual Stat Card
+.stat-card {
+  @include card-surface;
+  padding: 1.25rem 1.5rem;
+  @include flex-column;
+  gap: 0.4rem;
+
+  &__title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $text-muted;
+  }
+
+  &__value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: $text-primary;
+    letter-spacing: -0.02em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__desc {
+    font-size: 0.75rem;
+    color: $text-secondary;
+  }
+}
+
+// Generic SaaS layout cards
+.section-card {
+  background-color: $bg-secondary;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-md;
+  padding: 1.75rem;
+  margin-bottom: 1.5rem;
+
+  @include mobile {
+    padding: 1.25rem;
+  }
+
+  &__header {
+    @include flex-between;
+    margin-bottom: 1.25rem;
+
+    h2 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: $text-primary;
+    }
+  }
+
+  &__desc {
+    font-size: 0.875rem;
+    color: $text-secondary;
+    margin-bottom: 1.5rem;
+  }
+}
+
+// Info Insight box (on dashboard side)
+.info-card {
+  background-color: rgba($bg-secondary, 0.5);
+  border: 1px dashed $border-color;
+  border-radius: $border-radius-md;
+  padding: 1.5rem;
+  @include flex-column;
+  gap: 1rem;
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  p {
+    font-size: 0.8125rem;
+    color: $text-secondary;
+    line-height: 1.5;
+  }
+
+  &__alert {
+    background-color: rgba($accent-mint, 0.04);
+    border: 1px solid rgba($accent-mint, 0.15);
+    border-radius: $border-radius-sm;
+    padding: 0.75rem 1rem;
+    font-size: 0.8125rem;
+    color: $text-primary;
+    line-height: 1.45;
+  }
+}
+
+// ==========================================
+// BUTTONS IMPLEMENTATION
+// ==========================================
+.btn-primary {
+  @include btn-primary;
+}
+
+.btn-secondary {
+  @include btn-secondary;
+}
+
+.btn-danger {
+  @include btn-danger;
+}
+
+.btn-copy, .btn-simulate, .btn-delete {
+  @include btn-base;
+  padding: 0.45rem 0.875rem;
+  font-size: 0.8125rem;
+  border-radius: $border-radius-sm;
+}
+
+.btn-copy {
+  background-color: rgba($accent-mint, 0.08);
+  border: 1px solid rgba($accent-mint, 0.2);
+  color: $accent-mint;
+
+  &:hover {
+    background-color: $accent-mint;
+    color: #000;
+    font-weight: 600;
+  }
+
+  &--copied {
+    background-color: rgba($accent-mint, 0.18) !important;
+    border-color: $accent-mint !important;
+    color: $accent-mint-hover !important;
+  }
+}
+
+.btn-simulate {
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: $text-secondary;
+
+  &:hover {
+    border-color: rgba($accent-mint, 0.35);
+    color: $text-primary;
+    background-color: rgba($accent-mint, 0.04);
+  }
+}
+
+.btn-delete {
+  background-color: rgba($danger-color, 0.05);
+  border: 1px solid rgba($danger-color, 0.15);
+  color: $danger-color;
+
+  &:hover {
+    background-color: $danger-color;
+    color: $text-primary;
+  }
+}
+
+// ==========================================
+// LINKCARD RENDER SYSTEM
+// ==========================================
+.links-list {
+  @include flex-column;
+  gap: 1rem;
+}
+
+.link-card {
+  background-color: $bg-tertiary;
+  border: 1px solid rgba(255,255,255,0.03);
+  border-radius: $border-radius-md;
+  padding: 1.25rem;
+  @include flex-column;
+  gap: 0.875rem;
+  transition: all $transition-speed;
+
+  &:hover {
+    border-color: rgba($accent-mint, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+
+  &__header {
+    @include flex-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  &__short-info {
+    @include flex-column;
+    gap: 0.25rem;
+  }
+
+  &__label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $text-muted;
+  }
+
+  &__short-url {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: $accent-mint;
+    word-break: break-all;
+
+    &:hover {
+      color: $accent-mint-hover;
+      text-decoration: underline;
+    }
+  }
+
+  &__clicks-badge {
+    @include flex-center;
+    gap: 0.35rem;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: $border-radius-sm;
+    padding: 0.35rem 0.75rem;
+    flex-shrink: 0;
+  }
+
+  &__clicks-count {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: $text-primary;
+  }
+
+  &__clicks-label {
+    font-size: 0.75rem;
+    color: $text-secondary;
+  }
+
+  &__body {
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  }
+
+  &__original-info {
+    @include flex-column;
+    gap: 0.25rem;
+  }
+
+  &__original-url {
+    font-size: 0.8125rem;
+    color: $text-secondary;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+
+  &__footer {
+    @include flex-between;
+    gap: 1rem;
+
+    @include tablet {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+  }
+
+  &__date {
+    font-size: 0.75rem;
+    color: $text-muted;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+
+    @include tablet {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+}
+
+// ==========================================
+// MY LINKS PAGE SEARCH & GRID
+// ==========================================
+.my-links-search {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.links-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.input-with-icon {
+  position: relative;
+  width: 100%;
+
+  input {
+    padding-left: 2.75rem;
+  }
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $text-muted;
+  @include flex-center;
+  pointer-events: none;
+}
+
+// Form help text description
+.form-help-text {
+  font-size: 0.75rem;
+  color: $text-muted;
+  margin-top: 0.4rem;
+}
+
+// ==========================================
+.create-link-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto 0 auto;
+}
+
+.form-card {
+  background-color: $bg-secondary;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-md;
+  padding: 2rem;
+  width: 100%;
+
+  @include mobile {
+    padding: 1.25rem;
+  }
+}
+
+.form-error-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: $border-radius-sm;
+  background-color: rgba($danger-color, 0.08);
+  border: 1px solid rgba($danger-color, 0.15);
+  color: $danger-color;
+  font-size: 0.8125rem;
+  margin-bottom: 1.25rem;
+}
+
+.result-card {
+  background-color: $bg-secondary;
+  border: 1px solid rgba($accent-mint, 0.2);
+  border-radius: $border-radius-md;
+  padding: 2rem;
+  width: 100%;
+  @include flex-column;
+  gap: 1rem;
+  box-shadow: 0 4px 20px rgba($accent-mint, 0.03);
+
+  @include mobile {
+    padding: 1.25rem;
+  }
+
+  h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: $accent-mint;
+  }
+
+  &__desc {
+    font-size: 0.8125rem;
+    color: $text-secondary;
+    line-height: 1.45;
+  }
+
+  &__actions {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 0.75rem;
+  }
+}
+
+.result-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background-color: $bg-tertiary;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-sm;
+  padding: 0.75rem 1rem;
+
+  &__link {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-primary;
+    word-break: break-all;
+  }
+}
+
+// ==========================================
+// ANALYTICS PAGE CHART
+// ==========================================
+.analytics-chart {
+  @include flex-column;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.chart-row {
+  @include flex-column;
+  gap: 0.5rem;
+
+  &__info {
+    @include flex-between;
+    gap: 1rem;
+  }
+
+  &__short {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  &__clicks {
+    font-size: 0.8125rem;
+    color: $text-secondary;
+    strong {
+      color: $accent-mint;
+    }
+  }
+
+  &__bar-container {
+    height: 26px;
+    background-color: $bg-tertiary;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+    border: 1px solid rgba(255,255,255,0.02);
+  }
+
+  &__bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, rgba($accent-mint, 0.85), $accent-mint);
+    border-radius: 4px;
+    @include flex-center;
+    justify-content: flex-end;
+    padding-right: 0.75rem;
+    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: inset 0 -2px 6px rgba(0,0,0,0.15);
+  }
+
+  &__bar-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #000;
+  }
+
+  &__target-url {
+    font-size: 0.75rem;
+    color: $text-muted;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+// ==========================================
+// PROFILE PAGE STYLES
+// ==========================================
+.profile-page__content {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+
+  @include tablet {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.profile-details {
+  @include flex-column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.profile-detail-row {
+  @include flex-between;
+  padding: 0.875rem 1.25rem;
+  background-color: $bg-tertiary;
+  border-radius: $border-radius-sm;
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  gap: 1rem;
+
+  &__label {
+    font-size: 0.875rem;
+    color: $text-secondary;
+  }
+
+  &__value {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $text-primary;
+    word-break: break-all;
+    text-align: right;
+
+    &--active {
+      color: $accent-mint;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+  }
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: $accent-mint;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 8px $accent-mint;
+}
+
+.api-key-box {
+  @include flex-column;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+
+  label {
+    margin-bottom: 0;
+  }
+
+  &__input-wrapper {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  &__input {
+    font-family: monospace;
+    font-size: 0.8125rem;
+    color: $accent-mint-hover;
+    background-color: $bg-primary;
+    border-color: rgba($accent-mint, 0.15);
+  }
+}
+
+// ==========================================
+// PAGES & DASHBOARD CONTENT GRID STRUCTURE
+// ==========================================
+.dashboard-page {
+  @include flex-column;
+  gap: 2rem;
+
+  &__header {
+    @include flex-between;
+    gap: 1rem;
+
+    @include mobile {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+      button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.dashboard-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+
+  @include tablet {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+// My Links Page Layout
+.my-links-page {
+  @include flex-column;
+  gap: 1.5rem;
+
+  &__header {
+    @include flex-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    @include mobile {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+      button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+// Create Link & Analytics Headers
+.create-link-page, .analytics-page {
+  @include flex-column;
+  gap: 1rem;
+  
+  &__header {
+    margin-bottom: 1rem;
+  }
+}
+
+// ==========================================
+// REUSABLE EMPTY STATE LAYOUT
+// ==========================================
+.empty-state {
+  @include flex-center;
+  @include flex-column;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background-color: $bg-secondary;
+  border-radius: $border-radius-md;
+
+  &__icon {
+    margin-bottom: 1rem;
+    color: $text-muted;
+    @include flex-center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: $bg-tertiary;
+  }
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 0.875rem;
+    color: $text-secondary;
+    max-width: 320px;
+    margin: 0 auto;
+    line-height: 1.45;
+  }
+
+  &__text {
+    font-size: 0.875rem;
+    color: $text-secondary;
+  }
+}
+
+// ==========================================
+// ANIMATIONS & UTILITIES
+// ==========================================
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s $transition-ease;
+}
+
+.view-all-link {
+  font-size: 0.8125rem;
+  color: $accent-mint;
+  font-weight: 500;
+  transition: color $transition-speed;
+
+  &:hover {
+    color: $accent-mint-hover;
+    text-decoration: underline;
+  }
+}
+
+// ==========================================
+// EARNINGS PAGE LAYOUT
+// ==========================================
+.earnings-page {
+  @include flex-column;
+  gap: 1.5rem;
+  animation: fadeIn 0.3s $transition-ease;
+
+  &__header {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.earnings-grid {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+
+  @include tablet {
+    grid-template-columns: 1fr;
+  }
+
+  &__main {
+    @include flex-column;
+    gap: 1.5rem;
+  }
+
+  &__side {
+    position: sticky;
+    top: calc($navbar-height + 1.5rem);
+  }
+}
+
+// Program Breakdown Cards
+.program-breakdown {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.program-card {
+  background-color: $bg-tertiary;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-md;
+  padding: 1.25rem;
+  @include flex-column;
+  gap: 1rem;
+  transition: transform $transition-speed, border-color $transition-speed;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: $border-color-active;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    padding-bottom: 0.75rem;
+  }
+
+  &__earnings {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $accent-mint;
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  &__stat {
+    @include flex-column;
+    gap: 0.25rem;
+
+    .label {
+      font-size: 0.6875rem;
+      color: $text-muted;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .value {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: $text-primary;
+    }
+  }
+
+  &--amazon {
+    border-left: 3px solid #ff9900;
+    &:hover {
+      border-color: rgba(#ff9900, 0.4);
+    }
+  }
+
+  &--flipkart {
+    border-left: 3px solid #2874f0;
+    &:hover {
+      border-color: rgba(#2874f0, 0.4);
+    }
+  }
+}
+
+// Split Visual Indicator
+.earnings-split {
+  margin-top: 1rem;
+  @include flex-column;
+  gap: 0.5rem;
+
+  &__bar {
+    height: 8px;
+    border-radius: 4px;
+    background-color: $bg-tertiary;
+    display: flex;
+    overflow: hidden;
+  }
+
+  &__fill {
+    height: 100%;
+    transition: width 0.4s ease;
+
+    &--amazon {
+      background-color: #ff9900;
+    }
+
+    &--flipkart {
+      background-color: #2874f0;
+    }
+  }
+
+  &__labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: $text-secondary;
+  }
+}
+
+// Badges
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+
+  &--compact {
+    padding: 0.125rem 0.375rem;
+    font-size: 0.6875rem;
+  }
+
+  &--amazon {
+    background-color: rgba(#ff9900, 0.1);
+    color: #ff9900;
+    border: 1px solid rgba(#ff9900, 0.2);
+  }
+
+  &--flipkart {
+    background-color: rgba(#2874f0, 0.1);
+    color: #2c82ff;
+    border: 1px solid rgba(#2874f0, 0.2);
+  }
+}
+
+// Earnings Table
+.table-wrapper {
+  overflow-x: auto;
+  margin: 0 -1.5rem;
+  padding: 0 1.5rem;
+}
+
+.earnings-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+
+  th, td {
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid $border-color;
+  }
+
+  th {
+    font-weight: 500;
+    color: $text-secondary;
+    background-color: rgba(255, 255, 255, 0.01);
+  }
+
+  td {
+    color: $text-primary;
+    vertical-align: middle;
+  }
+
+  tr:hover td {
+    background-color: rgba(255, 255, 255, 0.01);
+  }
+
+  .table-link {
+    color: $accent-mint;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color $transition-speed;
+
+    &:hover {
+      color: $accent-mint-hover;
+      text-decoration: underline;
+    }
+  }
+
+  .earnings-cell {
+    font-weight: 600;
+    color: $accent-mint;
+  }
+}
+
+// Compact simulate button
+.btn-simulate--compact {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: $border-radius-sm;
+  background-color: rgba($accent-mint, 0.08);
+  border: 1px solid rgba($accent-mint, 0.15);
+  color: $accent-mint;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: all $transition-speed;
+
+  &:hover {
+    background-color: $accent-mint;
+    color: $bg-primary;
+    border-color: $accent-mint;
+  }
+
+  svg {
+    transition: transform 0.2s;
+  }
+
+  &:active svg {
+    transform: scale(0.9) translate(1px, -1px);
+  }
+}
+
+// Transaction History timeline
+.history-card {
+  max-height: 600px;
+  @include flex-column;
+  
+  .section-card__header {
+    border-bottom: 1px solid $border-color;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.transaction-timeline {
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  @include flex-column;
+  gap: 1rem;
+  flex: 1;
+
+  /* Custom scrollbar */
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.transaction-item {
+  position: relative;
+  padding-left: 1.25rem;
+  display: flex;
+
+  &__dot {
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: $accent-mint;
+    box-shadow: 0 0 8px $accent-mint;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 3.5px;
+    top: 14px;
+    bottom: -18px;
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  &:last-child::before {
+    display: none;
+  }
+
+  &__content {
+    background-color: $bg-tertiary;
+    border: 1px solid $border-color;
+    border-radius: $border-radius-md;
+    padding: 0.75rem;
+    width: 100%;
+    @include flex-column;
+    gap: 0.375rem;
+    transition: border-color $transition-speed;
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__id {
+    font-size: 0.75rem;
+    font-family: monospace;
+    color: $text-secondary;
+  }
+
+  &__amt {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $accent-mint;
+  }
+
+  &__details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__val {
+    font-size: 0.75rem;
+    color: $text-muted;
+  }
+
+  &__meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.6875rem;
+    color: $text-muted;
+    border-top: 1px dashed rgba(255, 255, 255, 0.04);
+    padding-top: 0.25rem;
+    margin-top: 0.25rem;
+  }
+
+  &__link {
+    font-family: monospace;
+  }
+}
+
+.timeline-footer {
+  text-align: center;
+  font-size: 0.75rem;
+  color: $text-muted;
+  margin-top: 0.5rem;
+}
+
+.timeline-empty {
+  @include flex-center;
+  @include flex-column;
+  text-align: center;
+  padding: 3rem 1rem;
+  color: $text-muted;
+  gap: 0.75rem;
+
+  svg {
+    opacity: 0.5;
+  }
+
+  p {
+    font-size: 0.8125rem;
+    max-width: 200px;
+    line-height: 1.4;
+  }
+}

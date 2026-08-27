@@ -1,0 +1,52 @@
+@use "./styles/variables" as *;
+@use "./styles/reset";
+@use "./styles/mixins" as *;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body {
+  font-family: $font-family;
+  background-color: $bg-primary;
+  color: $text-primary;
+  overflow-x: hidden;
+  @include custom-scrollbar;
+}
+
+// Global Form Controls
+input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: $bg-tertiary;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-sm;
+  color: $text-primary;
+  transition: border-color $transition-speed $transition-ease, box-shadow $transition-speed $transition-ease;
+
+  &::placeholder {
+    color: $text-muted;
+  }
+
+  &:focus {
+    @include interactive-focus;
+  }
+}
+
+// Form Labels
+label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: $text-secondary;
+}
+
+// Form groups
+.form-group {
+  margin-bottom: 1.25rem;
+  @include flex-column;
+}
+
+// Scrollbars on all elements
+* {
+  @include custom-scrollbar;
+}
