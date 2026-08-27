@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { LinkProvider } from './context/LinkContext';
@@ -13,6 +13,7 @@ import MyLinks from './pages/MyLinks';
 import Analytics from './pages/Analytics';
 import Earnings from './pages/Earnings';
 import Profile from './pages/Profile';
+import Database from './pages/Database';
 import './App.scss';
 
 const AppContent = () => {
@@ -102,6 +103,14 @@ const AppContent = () => {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/database"
+              element={
+                <ProtectedRoute>
+                  <Database />
+                </ProtectedRoute>
+              }
+            />
 
             {/* Redirects */}
             <Route path="/" element={<Navigate to="/login" replace />} />
@@ -114,6 +123,68 @@ const AppContent = () => {
 };
 
 export const App = () => {
+  const [dbLoaded, setDbLoaded] = useState(false);
+
+  useEffect(() => {
+    const initDb = async () => {
+      try {
+        const res = await fetch('/api/db');
+        if (res.ok) {
+          const data = await res.json();
+          
+          const hasBackendData = (data.affiliateUsers && data.affiliateUsers.length > 0) || 
+                                 (data.affiliateLinks && data.affiliateLinks.length > 0);
+                                 
+          if (!hasBackendData) {
+            // Migrate local storage if backend is empty
+            const localUsers = JSON.parse(localStorage.getItem('affiliateUsers') || '[]');
+            const localLinks = JSON.parse(localStorage.getItem('affiliateLinks') || '[]');
+            const localCurrentUser = JSON.parse(localStorage.getItem('currentAffiliateUser') || 'null');
+            
+            if (localUsers.length > 0 || localLinks.length > 0 || localCurrentUser) {
+              await fetch('/api/db', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  affiliateUsers: localUsers,
+                  affiliateLinks: localLinks,
+                  currentAffiliateUser: localCurrentUser
+                })
+              });
+              setDbLoaded(true);
+              return;
+            }
+          }
+          
+          // Populate localStorage from backend
+          if (data.affiliateUsers) localStorage.setItem('affiliateUsers', JSON.stringify(data.affiliateUsers));
+          if (data.affiliateLinks) localStorage.setItem('affiliateLinks', JSON.stringify(data.affiliateLinks));
+          if (data.currentAffiliateUser !== undefined) {
+            if (data.currentAffiliateUser === null) {
+              localStorage.removeItem('currentAffiliateUser');
+            } else {
+              localStorage.setItem('currentAffiliateUser', JSON.stringify(data.currentAffiliateUser));
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Error initializing db from backend:', err);
+      } finally {
+        setDbLoaded(true);
+      }
+    };
+    initDb();
+  }, []);
+
+  if (!dbLoaded) {
+    return (
+      <div className="db-loading">
+        <div className="db-loading__spinner"></div>
+        <p className="db-loading__text">Connecting to Live JSON Database...</p>
+      </div>
+    );
+  }
+
   return (
     <BrowserRouter>
       <AuthProvider>
@@ -126,3 +197,4 @@ export const App = () => {
 };
 
 export default App;
+
