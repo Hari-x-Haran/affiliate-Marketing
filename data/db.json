@@ -15,6 +15,10 @@
     {
       "userId": "tester3",
       "password": "password123"
+    },
+    {
+      "userId": "vino",
+      "password": "vino@123"
     }
   ],
   "affiliateLinks": [
@@ -35,7 +39,5 @@
       "userId": "testuser"
     }
   ],
-  "currentAffiliateUser": {
-    "userId": "tester"
-  }
+  "currentAffiliateUser": null
 }
