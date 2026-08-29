@@ -3,10 +3,18 @@
     {
       "userId": "admin",
       "password": "admin@123"
+    },
+    {
+      "userId": "hari",
+      "password": "hari@123"
+    }
+    {
+      "userId": "vino",
+      "password": "vino@123"
     }
   ],
   "affiliateLinks": [],
   "currentAffiliateUser": {
-    "userId": "admin"
+    "userId": "hari"
   }
 }
