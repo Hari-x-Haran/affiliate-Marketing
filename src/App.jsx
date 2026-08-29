@@ -107,7 +107,7 @@ const AppContent = () => {
               path="/database"
               element={
                 <ProtectedRoute>
-                  <Database />
+                  {/* <Database /> */}
                 </ProtectedRoute>
               }
             />

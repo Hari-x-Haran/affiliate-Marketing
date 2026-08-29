@@ -1,43 +1,12 @@
 {
   "affiliateUsers": [
     {
-      "userId": "testuser",
-      "password": "password123"
-    },
-    {
-      "userId": "hariharan",
-      "password": "hari@123"
-    },
-    {
-      "userId": "tester",
-      "password": "password123"
-    },
-    {
-      "userId": "tester3",
-      "password": "password123"
-    },
-    {
-      "userId": "vino",
-      "password": "vino@123"
+      "userId": "admin",
+      "password": "admin@123"
     }
   ],
-  "affiliateLinks": [
-    {
-      "id": "32sfnC",
-      "originalUrl": "https://www.flipkart.com/apple-iphone-12-blue-128-gb/p/itm9b6264d1297e2",
-      "shortUrl": "https://short.ly/32sfnC",
-      "clicks": 22,
-      "createdAt": "2026-08-26T04:02:11.890Z",
-      "userId": "testuser"
-    },
-    {
-      "id": "EMbR2J",
-      "originalUrl": "https://www.amazon.in/dp/B08L5T3822?th=1&psc=1",
-      "shortUrl": "https://short.ly/EMbR2J",
-      "clicks": 42,
-      "createdAt": "2026-08-26T04:01:54.809Z",
-      "userId": "testuser"
-    }
-  ],
-  "currentAffiliateUser": null
+  "affiliateLinks": [],
+  "currentAffiliateUser": {
+    "userId": "admin"
+  }
 }
